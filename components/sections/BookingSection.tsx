@@ -125,12 +125,21 @@ function BookingForm() {
 
   // LOGIQUE D'ENVOI EMAILJS
   const handleSubmit = async () => {
-    setIsSending(true);
-
-    // Identifiants EmailJS
+    // Identifiants EmailJS avec fallback pour éviter l'erreur de type
     const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID;
     const TEMPLATE_ID = process.env.NEXT_PUBLIC_TEMPLATE_ID;
     const PUBLIC_KEY = process.env.NEXT_PUBLIC_PUBLIC_KEY;
+
+    // Vérification de sécurité pour TypeScript (et runtime)
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      console.error(
+        "EmailJS credentials are missing in environment variables.",
+      );
+      alert("Configuration error. Please contact the administrator.");
+      return;
+    }
+
+    setIsSending(true);
 
     try {
       const templateParams = {
@@ -144,6 +153,7 @@ function BookingForm() {
         message: formData.message,
       };
 
+      // Maintenant TypeScript est sûr que les IDs sont des strings
       await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
 
       setStep(4); // Succès
