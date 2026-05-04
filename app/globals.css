@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Custom Properties (Updated to Medical Blue Palette)
+   ───────────────────────────────────────────────────────────────────────── */
+:root {
+  /* La palette de bleu : Vibrant mais professionnel */
+  --primary-blue: #0ea5e9; /* Bleu ciel soutenu (Sky 500) */
+  --primary-light: #7dd3fc; /* Bleu clair pour les dégradés */
+  --primary-dim: #0369a1; /* Bleu profond pour les contrastes */
+
+  --pearl: #f8fafc; /* Un blanc légèrement bleuté très propre */
+  --charcoal: #0f172a; /* Un fond bleu nuit très sombre (Slate 950) au lieu du noir pur */
+  --graphite: #1e293b;
+  --surface: #1e293b;
+  --glass: rgba(15, 23, 42, 0.7);
+  --glass-accent: rgba(14, 165, 233, 0.05);
+  --border-glow: rgba(14, 165, 233, 0.3);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Base Reset & Scrollbar
+   ───────────────────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--charcoal);
+  color: var(--pearl);
+  font-family: var(--font-inter, "Inter", sans-serif);
+  overflow-x: hidden;
+}
+
+body[dir="rtl"],
+html[dir="rtl"] body {
+  font-family: var(--font-readex, "Readex Pro", sans-serif);
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--charcoal);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-dim);
+  border-radius: 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Grain Overlay
+   ───────────────────────────────────────────────────────────────────────── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.25; /* Légèrement réduit pour un look plus "clinique" */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Typography Utilities
+   ───────────────────────────────────────────────────────────────────────── */
+.font-serif {
+  font-family: var(--font-playfair, "Playfair Display", Georgia, serif);
+}
+
+[dir="rtl"] .font-serif,
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3 {
+  font-family: var(--font-readex, "Readex Pro", sans-serif);
+  font-weight: 600;
+}
+
+.blue-gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--primary-light),
+    var(--primary-blue),
+    var(--primary-dim)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Glassmorphism Components
+   ───────────────────────────────────────────────────────────────────────── */
+@layer components {
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .glass-accent {
+    background: var(--glass-accent);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glow);
+  }
+
+  .glow-border {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(
+          135deg,
+          var(--primary-blue),
+          transparent 40%,
+          var(--primary-dim)
+        )
+        border-box;
+  }
+
+  .eyebrow {
+    @apply text-[0.65rem] tracking-[0.3em] uppercase font-medium;
+    color: var(--primary-blue);
+  }
+
+  /* Primary CTA button - Blue Glow */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full
+           text-xs font-semibold tracking-widest uppercase
+           transition-all duration-300;
+    background: linear-gradient(
+      135deg,
+      var(--primary-light),
+      var(--primary-blue)
+    );
+    color: var(--charcoal);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(14, 165, 233, 0.4);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  /* Outline CTA button */
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full
+           text-xs font-medium tracking-widest uppercase
+           transition-all duration-300;
+    color: var(--primary-blue);
+    border: 1px solid var(--border-glow);
+    background: transparent;
+  }
+  .btn-outline:hover {
+    background: rgba(14, 165, 233, 0.08);
+    border-color: var(--primary-blue);
+    transform: translateY(-2px);
+  }
+
+  /* Form input */
+  .form-input {
+    @apply w-full px-5 py-3.5 rounded-xl text-sm outline-none transition-all duration-300;
+    background: #1e293b;
+    border: 1px solid var(--border-subtle);
+    color: var(--pearl);
+    font-family: inherit;
+  }
+  .form-input:focus {
+    border-color: var(--primary-blue);
+    background: rgba(14, 165, 233, 0.04);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+  }
+  .form-input::placeholder {
+    color: #64748b;
+  }
+
+  /* Service card */
+  .service-card {
+    @apply relative overflow-hidden rounded-2xl p-8 cursor-pointer
+           transition-all duration-500;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.3),
+      0 0 0 1px var(--border-glow);
+  }
+}
+
+/* ... (Reste des animations et utilitaires inchangés, mais utilisant les nouvelles variables) ... */
+
+[dir="rtl"] .eyebrow::after {
+  content: "";
+  display: inline-block;
+  width: 2rem;
+  height: 1px;
+  background: var(--primary-dim);
+  vertical-align: middle;
+  margin-inline-start: 0.75rem;
+}
+
+[dir="rtl"] .hero-eyebrow-line-before {
+  background: linear-gradient(270deg, transparent, var(--primary-dim));
+}
+[dir="rtl"] .hero-eyebrow-line-after {
+  background: linear-gradient(270deg, var(--primary-dim), transparent);
+}
