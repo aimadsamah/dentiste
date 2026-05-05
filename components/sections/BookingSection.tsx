@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Mail, Clock, CheckCircle, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
-import * as emailjs from "@emailjs/browser";
+import { send } from "@emailjs/browser";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Step Indicator
@@ -154,7 +154,7 @@ function BookingForm() {
       };
 
       // Maintenant TypeScript est sûr que les IDs sont des strings
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
+      await send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY);
 
       setStep(4); // Succès
     } catch (error) {
