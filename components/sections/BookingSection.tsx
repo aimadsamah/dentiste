@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Mail, Clock, CheckCircle, Loader2 } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
-import emailjs from "@emailjs/browser";
+import * as emailjs from "@emailjs/browser";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Step Indicator
